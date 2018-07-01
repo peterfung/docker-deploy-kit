@@ -1,0 +1,16 @@
+version: "3"
+services:
+  flaskapp:
+    image: flaskapp
+    build: ./flaskapp
+    volumes:
+      - ../src:/usr/app/src
+    working_dir: /usr/app/src
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_ENV: "development"
+      FLASK_APP: /usr/app/src/hello.py
+    # command: uwsgi --ini uwsgi.ini
+    ports:
+      - 5000:5000
+    command: flask run --host=0.0.0.0

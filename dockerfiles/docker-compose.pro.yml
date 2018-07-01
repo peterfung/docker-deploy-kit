@@ -1,0 +1,7 @@
+version: "3"
+services:
+  flaskapp:
+    environment:
+      FLASK_DEBUG: 0
+      FLASK_ENV: "production"
+    restart: always
