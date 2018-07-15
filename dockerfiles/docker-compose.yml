@@ -10,10 +10,12 @@ services:
       FLASK_DEBUG: 1
       FLASK_ENV: "development"
       FLASK_APP: /usr/app/src/hello.py
+    links:
+      - mysql:mysql_server
     ports:
       - 9001:9001
     command: gunicorn -w 4 -b 0.0.0.0:9001 hello:app
-    # command: flask run --host=0.0.0.0
+    # command: flask run --host=0.0.0.0:9001
 
   nginx:
     image: nginx:1.14.0-alpine
@@ -29,3 +31,20 @@ services:
       - ../config/nginx/sites-available:/etc/nginx/sites-available
       - ../config/nginx/sites-available:/etc/nginx/sites-enabled
       - ../log/nginx:/var/log/nginx
+
+  mysql:
+    image: mysql:5.7.20
+    ports:
+      - 3306:3306
+    volumes:
+      - ../config/mysql/conf:/etc/mysql
+      - ../config/mysql/conf/my.conf:/etc/my.conf
+      - ~/docker-data/mysql/data:/var/lib/mysql
+    # container_name: mysql-5.7
+    # restart: always
+    environment:
+      MYSQL_DATABASE: "testdb"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+      #MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci

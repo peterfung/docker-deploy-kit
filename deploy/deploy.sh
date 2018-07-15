@@ -34,7 +34,7 @@ elif [ "$1" == "dev" ]; then
     #启动app
     docker-compose \
         -f ../dockerfiles/docker-compose.yml \
-        up --no-deps --build -d flaskapp
+        up --no-deps --build flaskapp
     echo "Done."
     exit
 else
